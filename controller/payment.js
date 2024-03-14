@@ -130,7 +130,6 @@ const confirmPayment = async (req, res) => {
 /* -----------------------------Payment Charge------------------------------- */
 const createCustomer = async (req, res) => {
 	try {
-		console.log(req.body);
 		const customer = await stripe.customers.create({
 			email: req.body.email,
 			source: req.body.stripeToken,
