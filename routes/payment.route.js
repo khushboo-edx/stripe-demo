@@ -15,6 +15,9 @@ app.post('/pay/:id/cancel', paymentController.cancelPayment);
 app.get('/pay/:id/capture', paymentController.capturePayment);
 app.post('/pay/:id/confirm', paymentController.confirmPayment);
 
-app.post('/create-customer', paymentController.createCustomer);
+app.post('/charge', paymentController.createCharge);
+app.patch('/charge/:id', paymentController.chargeUpdate);
+app.get('/charge/:id', paymentController.chargeDetails);
+app.get('/charge', paymentController.chargeList);
 
 module.exports = app;

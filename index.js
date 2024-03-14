@@ -13,7 +13,6 @@ const publishableKey =
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-console.log(path.join(__dirname, 'views'));
 
 app.get('/', function (req, res) {
 	res.render('Home', {

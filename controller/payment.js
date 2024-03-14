@@ -6,8 +6,6 @@ const stripe = require('stripe')(secretKey);
 /* ------------------------------Payment Intents--------------------------- */
 const createPayment = async (req, res) => {
 	try {
-		console.log({ req });
-		console.log('true-----------------------');
 		const paymentIntent = await stripe.paymentIntents.create({
 			amount: 100,
 			currency: 'usd',
@@ -19,7 +17,6 @@ const createPayment = async (req, res) => {
 			return_url:
 				'https://dashboard.stripe.com/test/logs/req_gfn4zMO9LzSuBu?t=1710408345',
 		});
-		// console.log({ paymentIntent });
 		// const clientSecret = paymentIntent.client_secret;
 		// const temp = await stripe.handleCardAction(clientSecret);
 		// console.log({ temp, paymentIntent });
@@ -128,7 +125,7 @@ const confirmPayment = async (req, res) => {
 };
 
 /* -----------------------------Payment Charge------------------------------- */
-const createCustomer = async (req, res) => {
+const createCharge = async (req, res) => {
 	try {
 		const customer = await stripe.customers.create({
 			email: req.body.email,
@@ -154,6 +151,49 @@ const createCustomer = async (req, res) => {
 	}
 };
 
+const chargeUpdate = async (req, res) => {
+	try {
+		const chargeList = await stripe.charges.update(req.params.id, {
+			metadata: {
+				order: '12334',
+			},
+		});
+		return res.status(200).send({
+			status: 200,
+			message: 'Payment updated Successfully',
+			data: chargeList,
+		});
+	} catch (error) {
+		res.status(500).send(error);
+	}
+};
+
+const chargeDetails = async (req, res) => {
+	try {
+		const chargeDetails = await stripe.charges.retrieve(req.params.id);
+		return res.status(200).send({
+			status: 200,
+			message: 'Payment info get Successfully',
+			data: chargeDetails,
+		});
+	} catch (error) {
+		res.status(500).send(error);
+	}
+};
+
+const chargeList = async (req, res) => {
+	try {
+		const chargeList = await stripe.charges.list({ limit: 10 });
+		return res.status(200).send({
+			status: 200,
+			message: 'Payment get Successfully',
+			data: chargeList,
+		});
+	} catch (error) {
+		res.status(500).send(error);
+	}
+};
+
 module.exports = {
 	createPayment,
 	updatePayment,
@@ -162,5 +202,8 @@ module.exports = {
 	cancelPayment,
 	confirmPayment,
 	capturePayment,
-	createCustomer,
+	createCharge,
+	chargeDetails,
+	chargeList,
+	chargeUpdate,
 };
